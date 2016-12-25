@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	var aaaa = {
+		a : 233,
+		b : 2
+	};
+	var bbbb = {
+		a : 666,
+		b : function(a, b){
+			console.log(this, this.a);
+			console.log(a, b);
+		}
+	};
+	//bbbb.b.bind()
+
+	function demo(){
+		console.log(this);
+		for(var index in arguments){
+			console.log(arguments[index])
+		}
+	}
+	//demo.call(bbbb,[1,2,3,4]);
+	demo.apply(bbbb,[1]);
+	demo.call(bbbb,1);
+</script>
+</body>
+</html>

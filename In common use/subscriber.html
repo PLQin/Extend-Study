@@ -1,0 +1,94 @@
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>订阅者模式</title>
+	</head>
+	<body>
+		<script>
+			var DAY = 1000;
+			// 报社
+			function Office(option){
+				this.subscribers = [];
+				this.newspaperIndex = 0;
+				this.name = option.name;
+				this.duration = option.duration;
+			}
+			// 分发报纸方法
+			Office.prototype.dispatch = function(){
+				setInterval(function(){
+					this.newspaperIndex++;
+					this.subscribers.forEach(function(item){
+						item.receive([this.name, "的第", this.newspaperIndex, "份报纸"].join(""));
+					}.bind(this));
+				}.bind(this), this.duration * DAY);
+			};
+			// 删除取消订阅的订阅家庭
+			Office.prototype.deleteSubscriber = function(subscriber, callback){
+				this.subscribers.forEach(function(item, index, arr){
+					item === subscriber && arr.splice(index, 1);
+				});
+				callback.call(subscriber, this.name);
+			};
+			// 订报家庭
+			function Family(option){
+				this.name = option.name + "一家";
+				this.newspapers = [];
+				this.isClear = option.isClear;
+			}
+			// 订阅报纸方法
+			Family.prototype.subscribe = function(office){
+				office.subscribers.push(this);
+				if(!this.isClearSet && this.isClear){
+					this.isClearSet = 1;
+					this.clear();
+				}
+			};
+			// 收取报社发来的报纸
+			Family.prototype.receive = function(newspaper){
+				var sum = this.newspapers.push(newspaper);
+				console.info([this.name, "收到了来自", newspaper, "，\n家里共计有", sum, "份报纸。"].join(""));
+				console.log("------------------------------------");
+			};
+			// 清理报纸
+			Family.prototype.clear = function(){
+				setInterval(function(){
+					this.newspapers.length = 0;
+					console.warn([this.name, "清理了报纸,家中还剩", this.newspapers.length, "份报纸"].join(""));
+				}.bind(this), 30 * DAY);
+			};
+			// 取消订阅报社的报纸
+			Family.prototype.unsubscribe = function(office){
+				office.deleteSubscriber(this, function(name){
+					console.warn([this.name, "取消了对", name, "的订阅。"].join(""));
+				});
+			};
+			var dailyOffice = new Office({
+				name : "日报社",
+				duration : 1
+			});
+			var weeklyOffice = new Office({
+				name : "周报社",
+				duration : 7
+			});
+			var family1 = new Family({
+				name : "史密斯"
+			});
+			var family2 = new Family({
+				name : "杰克",
+				isClear : 1/*无意义参数*/
+			});
+			var family3 = new Family({
+				name : "露西",
+				isClear : 1
+			});
+			family1.subscribe(dailyOffice);
+			family3.subscribe(dailyOffice);
+			family3.subscribe(weeklyOffice);
+			dailyOffice.dispatch();
+			weeklyOffice.dispatch();
+			setTimeout(function(){
+				family3.unsubscribe(dailyOffice);
+			}, 45 * DAY);
+		</script>
+	</body>
+</html>

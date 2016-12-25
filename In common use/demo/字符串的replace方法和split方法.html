@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>字符串的replace方法</title>
+</head>
+<body>
+<script>
+    // relplace 第一个参数是 匹配模式,寻找被匹配的字符 ; 第二个参赛是 替换的字符,或是一个函数(这个函数返回 替换的字符);
+function htmlEscape(text) {
+    return text.replace(/[<>"&]/g,function(match,pos,originalText){
+        switch (match){
+            case "<" :
+                return "&lt;" ;
+            case ">" :
+                return "&gt;" ;
+            case "&" :
+                return "&amp;";
+            case "'" :
+                return "&quot" ;
+        }
+    });
+}
+console.log(htmlEscape("<p class='greeting'>Hello world</p>"));
+//&lt;p class='greeting'&gt;Hello world&lt;/p&gt;
+
+
+    // split方法
+    var text2 = "red,bule,green";
+    var text2RegExp1 = text2.split("e"); // ["r", "d,bul", ",gr", "", "n"] 连续的e被放在同一个值内
+    var text2RegExp2 = text2.split(",",5);
+    console.log(text2RegExp1)
+    console.log(text2RegExp2)
+</script>
+</body>
+</html>

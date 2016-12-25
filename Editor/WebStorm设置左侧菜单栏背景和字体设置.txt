@@ -1,0 +1,6 @@
+第一步：点击"file --> settings"，如下图所示：
+第二步：选择appearance->Theme选择darcula(黑色主题)
+在 IDE Settings > Appearance 的右边菜单里，选择 Theme > Darcula主题即可。
+
+
+配置完全局后再配置主体界面的颜色, 确认时点击no
